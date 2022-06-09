@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -8,23 +8,49 @@ import {
   View,
   TextInput,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Task from "../components/Task";
+import { db } from "../firebase";
+import { ref, onValue, update } from "firebase/database";
 
-const MyToDoScreen = () => {
+const MyToDoScreen = (props) => {
   const [task, setTask] = useState("");
   const [tasksArray, setTasksArray] = useState([]);
 
+  const getTasksFromDB = () => {
+    // console.log(route.params);
+    const tasksFromDBRef = ref(db, "users/" + props.username + "/tasks");
+    onValue(tasksFromDBRef, (snapshot) => {
+      const data = snapshot.val();
+      setTasksArray([...data]);
+    });
+  };
+
+  useEffect(() => {
+    getTasksFromDB();
+  }, []);
+
   const addTaskToArray = () => {
-    setTasksArray([...tasksArray, task]), setTask("");
+    let currTasks = [];
+    const tasksFromDBRef = ref(db, "users/" + props.username + "/tasks");
+    onValue(tasksFromDBRef, (snapshot) => {
+      currTasks = snapshot.val();
+    });
+    currTasks.push(task);
+    const updates = {};
+    updates["/users/" + props.username + "/tasks"] = currTasks;
+    setTask("");
+    return update(ref(db), updates);
   };
 
   const completeTask = (index) => {
     let tasksCopy = [...tasksArray];
     //at the index of array, remove 1 item
     tasksCopy.splice(index, 1);
-    setTasksArray(tasksCopy);
+    const updates = {};
+    updates["/users/" + props.username + "/tasks"] = tasksCopy;
+    return update(ref(db), updates);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>

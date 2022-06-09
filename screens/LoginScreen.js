@@ -4,45 +4,62 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   Text,
+  Image,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { auth } from "../firebase";
-// import {createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase";
+import { ref, set } from "firebase/database";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const username = email.slice(0, email.indexOf("@"));
+
+  writeUserData = () => {
+    set(ref(db, "users/" + username.toLowerCase()), {
+      email: email,
+      tasks: ["This is a dummy task! Keep this here and make your own"],
+      points: 0,
+      friends: [],
+    });
+  };
 
   const navigation = useNavigation();
 
-  // listener that will listen for state change, if users are logged in navigate to Home page
+  // hook that listens for something to be done after rendering
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigation.replace("TabNavigator");
+        navigation.navigate("TabNavigator", {
+          username: user.email.slice(0, user.email.indexOf("@")),
+        });
+        console.log(username);
       }
     });
-    return unsubscribe;
   }, []);
 
-  const handleSignUp = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
+  const signUpUser = () => {
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("Signed up with", user.email);
+        console.log("Signed up account:", user.email);
+        writeUserData(user);
       })
       .catch((error) => alert(error.message));
   };
 
-  const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
+  const loginUser = () => {
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("Logged in with", user.email);
+        console.log("Currently logged in:", user.email);
       })
       .catch((error) => alert(error.message));
   };
@@ -50,7 +67,7 @@ const LoginScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.inputContainer}>
-        <Text style={styles.title}>WeDo</Text>
+        <Image style={styles.image} source={require("../WeDo.png")} />
         <TextInput
           placeholder="Email"
           value={email}
@@ -67,12 +84,12 @@ const LoginScreen = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <TouchableOpacity onPress={loginUser} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={handleSignUp}
+          onPress={signUpUser}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
@@ -84,24 +101,24 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 40,
-    paddingVertical: 40,
-    textAlign: "center",
-    color: "#255957",
+  image: {
+    width: 300,
+    height: 300,
+    top: 20,
   },
   container: {
-    flex: 1,
-    justifyContent: "center",
+    flex: 2,
     alignItems: "center",
-    backgroundColor: "#EEEBD3",
   },
   inputContainer: {
+    top: 100,
     width: "80%",
+    alignItems: "center",
   },
   input: {
     backgroundColor: "white",
-    paddingHorizontal: 15,
+    width: "100%",
+    paddingHorizontal: 10,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
@@ -111,9 +128,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
+    top: 100,
   },
   button: {
-    backgroundColor: "#587E76",
+    backgroundColor: "#6EB0AE",
     width: "100%",
     padding: 15,
     borderRadius: 10,
@@ -127,11 +145,11 @@ const styles = StyleSheet.create({
   buttonOutline: {
     backgroundColor: "white",
     marginTop: 5,
-    borderColor: "#587E76",
+    borderColor: "#6EB0AE",
     borderWidth: 2,
   },
   buttonOutlineText: {
-    color: "#587E76",
+    color: "#6EB0AE",
     fontWeight: "700",
     fontSize: 16,
   },

@@ -1,14 +1,29 @@
-import react from "react";
+import react, { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
+import { signOut } from "firebase/auth";
+import { db } from "../firebase";
+import { ref, onValue } from "firebase/database";
 
-const HomeScreen = () => {
+const HomeScreen = (props) => {
+  const [points, setPoints] = useState();
+
+  const getPointsFromDB = () => {
+    const pointsFromDBRef = ref(db, "users/" + props.username + "/points");
+    onValue(pointsFromDBRef, (snapshot) => {
+      const data = snapshot.val();
+      setPoints(data);
+    });
+  };
+
+  useEffect(() => {
+    getPointsFromDB();
+  }, []);
+
   const navigation = useNavigation();
-
   const handleSignOut = () => {
-    auth
-      .signOut()
+    signOut(auth)
       .then(() => {
         navigation.replace("Login");
       })
@@ -16,25 +31,38 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Welcome back!</Text>
-      <Text>You currently have 100 points</Text>
-      <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-        <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity>
+    <View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleFont}>Welcome {props.username}</Text>
+      </View>
+
+      <Text>You currently have {points} points</Text>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+          <Text style={styles.buttonText}>Sign out</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 export default HomeScreen;
 const styles = StyleSheet.create({
+  titleContainer: {
+    paddingVertical: 120,
+    paddingHorizontal: 25,
+  },
+  titleFont: {
+    fontSize: 30,
+    fontWeight: "500",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#0782F9",
+    backgroundColor: "#6EB0AE",
     width: "50%",
     padding: 15,
     borderRadius: 10,

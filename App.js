@@ -5,14 +5,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
+import HelpScreen from "./screens/HelpScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MyToDoScreen from "./screens/MyToDoScreen";
-import FriendsScreen from "./screens/FriendsScreen";
+import LeaderboardScreen from "./screens/LeaderboardScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const TabNavigator = () => (
+const TabNavigator = ({ route }) => (
   <Tab.Navigator
     screenOptions={{
       headerShown: false,
@@ -20,34 +21,47 @@ const TabNavigator = () => (
   >
     <Tab.Screen
       name="Home"
-      component={HomeScreen}
+      children={() => <HomeScreen username={route.params.username} />}
       options={{
         tabBarIcon: () => (
-          <MaterialCommunityIcons name="home" color="#0782F9" size={30} />
+          <MaterialCommunityIcons name="home" color="#6EB0AE" size={30} />
         ),
       }}
     />
     <Tab.Screen
       name="Tasks"
-      component={MyToDoScreen}
+      children={() => <MyToDoScreen username={route.params.username} />}
       options={{
         tabBarIcon: () => (
           <MaterialCommunityIcons
             name="format-list-bulleted"
-            color="#0782F9"
+            color="#6EB0AE"
             size={30}
           />
         ),
       }}
     />
     <Tab.Screen
-      name="Friends"
-      component={FriendsScreen}
+      name="Leaderboard"
+      component={LeaderboardScreen}
       options={{
         tabBarIcon: () => (
           <MaterialCommunityIcons
             name="account-group"
-            color="#0782F9"
+            color="#6EB0AE"
+            size={30}
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Info"
+      component={HelpScreen}
+      options={{
+        tabBarIcon: () => (
+          <MaterialCommunityIcons
+            name="information-outline"
+            color="#6EB0AE"
             size={30}
           />
         ),
