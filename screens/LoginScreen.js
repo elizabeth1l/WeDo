@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useNavigation } from "@react-navigation/native";
 import react, { useEffect, useState } from "react";
 import {
@@ -22,10 +23,10 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const username = email.slice(0, email.indexOf("@"));
 
-  writeUserData = () => {
+  const writeUserData = () => {
     set(ref(db, "users/" + username.toLowerCase()), {
       email: email,
-      tasks: ["This is a dummy task! Keep this here and make your own"],
+      tasks: [["This is a dummy task! Keep this here and make your own", 0]],
       points: 0,
       friends: [],
     });

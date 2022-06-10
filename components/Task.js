@@ -1,17 +1,40 @@
-import react from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+/* eslint-disable no-unused-vars */
+import react, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
+import Modal from "react-native-modal";
 
 const Task = (props) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
   return (
-    <View style={styles.item}>
-      <View style={styles.itemLeft}>
-        <TouchableOpacity
-          style={styles.square}
-          onPress={props.completeTask}
-        ></TouchableOpacity>
-        <Text style={styles.itemText}>{props.text}</Text>
+    <View>
+      <View style={styles.item}>
+        <View style={styles.itemLeft}>
+          <TouchableOpacity
+            style={styles.square}
+            onPress={() => {
+              props.updatePoints();
+              props.completeTask();
+            }}
+          ></TouchableOpacity>
+          <Text style={styles.itemText}>{props.text}</Text>
+        </View>
+
+        <Button backgroundColor="white" title="i" onPress={toggleModal} />
       </View>
-      <View style={styles.circular}></View>
+
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.textContainer}>
+          <Text>Complete this task for:</Text>
+          <Text>{props.taskPointsArr}</Text>
+          <Text>points</Text>
+          <Button title="Hide" onPress={toggleModal} />
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -29,7 +52,8 @@ const styles = StyleSheet.create({
   square: {
     width: 24,
     height: 24,
-    backgroundColor: "#6EB0AE",
+    borderColor: "#6EB0AE",
+    borderWidth: 2,
     oopacity: 0.4,
     borderRadius: 5,
     marginRight: 15,
@@ -43,12 +67,23 @@ const styles = StyleSheet.create({
   itemText: {
     maxWidth: "80%",
   },
-  circular: {
-    width: 12,
-    height: 12,
-    borderColor: "#6EB0AE",
+  infoContainer: {
+    alignItems: "center",
+    width: 20,
+    height: 20,
+    borderColor: "gray",
     borderWidth: 2,
-    borderRadius: 5,
+    borderRadius: 50,
+  },
+
+  textContainer: {
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 10,
+    height: 100,
+    width: 300,
+    alignSelf: "center",
+    justifyContent: "center",
   },
 });
 

@@ -1,11 +1,11 @@
-import { StatusBar } from "expo-status-bar";
+/* eslint-disable no-unused-vars */
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
-import HelpScreen from "./screens/HelpScreen";
+import InfoScreen from "./screens/InfoScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MyToDoScreen from "./screens/MyToDoScreen";
 import LeaderboardScreen from "./screens/LeaderboardScreen";
@@ -56,7 +56,7 @@ const TabNavigator = ({ route }) => (
     />
     <Tab.Screen
       name="Info"
-      component={HelpScreen}
+      component={InfoScreen}
       options={{
         tabBarIcon: () => (
           <MaterialCommunityIcons

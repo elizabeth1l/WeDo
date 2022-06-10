@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 import react, { useState, useEffect } from "react";
 import {
   KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,35 +15,63 @@ import { ref, onValue, update } from "firebase/database";
 const MyToDoScreen = (props) => {
   const [task, setTask] = useState("");
   const [tasksArray, setTasksArray] = useState([]);
+  const [taskPointsArray, setPoints] = useState([]);
 
   const getTasksFromDB = () => {
-    // console.log(route.params);
     const tasksFromDBRef = ref(db, "users/" + props.username + "/tasks");
     onValue(tasksFromDBRef, (snapshot) => {
       const data = snapshot.val();
-      setTasksArray([...data]);
+      let newDataArray = data.map((subdata) => {
+        return subdata[0];
+      });
+      let points = data.map((task) => {
+        return task[1];
+      });
+      setTasksArray([...newDataArray]);
+      setPoints([...points]);
     });
   };
-
+  //will happen every time the page rerenders
   useEffect(() => {
     getTasksFromDB();
   }, []);
 
   const addTaskToArray = () => {
+    //make a copy of tasks array so that we can push the new task to the copy, then update the db
     let currTasks = [];
     const tasksFromDBRef = ref(db, "users/" + props.username + "/tasks");
     onValue(tasksFromDBRef, (snapshot) => {
       currTasks = snapshot.val();
     });
-    currTasks.push(task);
+    currTasks.push([task, 20]);
     const updates = {};
     updates["/users/" + props.username + "/tasks"] = currTasks;
     setTask("");
     return update(ref(db), updates);
   };
 
+  const updatePoints = (index) => {
+    //make a copy of tasks array from db to get the 1st index of each subarray which is the point value
+    let points = [];
+    points = [...taskPointsArray];
+    // get a copy of the total amount of points the user has
+    let totalPoints;
+    const totalPointsFromDBRef = ref(db, "users/" + props.username + "/points");
+    onValue(totalPointsFromDBRef, (snapshot) => {
+      totalPoints = snapshot.val();
+    });
+    const updates = {};
+    updates["/users/" + props.username + "/points"] = totalPoints +=
+      points[index];
+    return update(ref(db), updates);
+  };
+
   const completeTask = (index) => {
-    let tasksCopy = [...tasksArray];
+    let tasksCopy = [];
+    const tasksFromDBRef = ref(db, "users/" + props.username + "/tasks");
+    onValue(tasksFromDBRef, (snapshot) => {
+      tasksCopy = snapshot.val();
+    });
     //at the index of array, remove 1 item
     tasksCopy.splice(index, 1);
     const updates = {};
@@ -51,6 +79,10 @@ const MyToDoScreen = (props) => {
     return update(ref(db), updates);
   };
 
+  const evaluateTaskPoints = (index) => {
+    // return taskPointsArray[index] !== null ? taskPointsArray[index] : null;
+    return taskPointsArray[index];
+  };
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -59,12 +91,15 @@ const MyToDoScreen = (props) => {
 
       <View style={styles.textWrapper}>
         <View style={styles.items}>
-          {tasksArray.map((eachTask, index, yesno) => {
+          {tasksArray.map((eachTask, index) => {
             return (
               <Task
                 key={index}
                 text={eachTask}
+                updatePoints={() => updatePoints(index)}
                 completeTask={() => completeTask(index)}
+                taskPointsArr={taskPointsArray[index]}
+                // taskPointsArr={() => evaluateTaskPoints(index)}
               />
             );
           })}
@@ -93,6 +128,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 60,
     paddingTop: 70,
+    margin: 10,
     alignItems: "center",
   },
   container: {
@@ -105,6 +141,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#6EB0AE",
   },
   items: {
     marginTop: 20,
