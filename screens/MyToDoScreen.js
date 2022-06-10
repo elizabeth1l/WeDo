@@ -79,10 +79,6 @@ const MyToDoScreen = (props) => {
     return update(ref(db), updates);
   };
 
-  const evaluateTaskPoints = (index) => {
-    // return taskPointsArray[index] !== null ? taskPointsArray[index] : null;
-    return taskPointsArray[index];
-  };
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -99,7 +95,6 @@ const MyToDoScreen = (props) => {
                 updatePoints={() => updatePoints(index)}
                 completeTask={() => completeTask(index)}
                 taskPointsArr={taskPointsArray[index]}
-                // taskPointsArr={() => evaluateTaskPoints(index)}
               />
             );
           })}
@@ -139,7 +134,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   sectionTitle: {
-    fontSize: 24,
+    marginTop: 10,
+    fontSize: 30,
     fontWeight: "bold",
     color: "#6EB0AE",
   },

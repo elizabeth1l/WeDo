@@ -13,7 +13,7 @@ const Friend = (props) => {
           </View>
           <View style={styles.textContainer}>
             <TouchableOpacity style={styles.text}>
-              <Text>JustinBieber100</Text>
+              <Text>Grace100</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -23,7 +23,7 @@ const Friend = (props) => {
           </View>
           <View style={styles.textContainer}>
             <TouchableOpacity style={styles.text}>
-              <Text>Taylorswift20</Text>
+              <Text>Grace200</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -33,7 +33,97 @@ const Friend = (props) => {
           </View>
           <View style={styles.textContainer}>
             <TouchableOpacity style={styles.text}>
-              <Text>Taylorswift20</Text>
+              <Text>Grace300</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>4</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace400</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>5</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace500</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>6</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace600</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>7</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace700</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>8</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace800</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>9</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace900</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>10</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace1000</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>11</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace1100</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={{ ...styles.numberContainer, borderColor: "white" }}>
+            <Text>12</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity style={styles.text}>
+              <Text>Grace1200</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -64,7 +154,7 @@ const styles = StyleSheet.create({
   numberContainer: {
     backgroundColor: "white",
     alignItems: "center",
-    padding: 20,
+    justifyContent: "center",
     width: "16%",
     borderRadius: 10,
     borderWidth: "3mm",
