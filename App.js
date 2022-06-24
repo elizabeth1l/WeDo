@@ -43,7 +43,7 @@ const TabNavigator = ({ route }) => (
     />
     <Tab.Screen
       name="Leaderboard"
-      component={LeaderboardScreen}
+      children={() => <LeaderboardScreen username={route.params.username} />}
       options={{
         tabBarIcon: () => (
           <MaterialCommunityIcons

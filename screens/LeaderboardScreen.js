@@ -1,16 +1,27 @@
 /* eslint-disable no-unused-vars */
-import react from "react";
+import react, { useState } from "react";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   ScrollView,
+  ProgressViewIOSComponent,
 } from "react-native";
+import { db } from "../firebase";
 import Friend from "../components/Friend";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ref, onValue, update } from "firebase/database";
 
 const LeaderboardScreen = () => {
+  const [friends, setFriends] = useState();
+
+  const getFriendsFromDB = () => {
+    const friendsFromDBRef = ref(db, "users/" + props.username + "/friends");
+    onValue(friendsFromDBRef, (snapshot) => {
+      const data = snapshot.val();
+    });
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.addContainer}>
