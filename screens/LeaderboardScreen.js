@@ -29,7 +29,7 @@ const LeaderboardScreen = () => {
           <MaterialCommunityIcons
             name="account-plus-outline"
             color="white"
-            size="20"
+            size={20}
           />
         </TouchableOpacity>
       </View>
