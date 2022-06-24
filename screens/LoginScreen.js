@@ -28,7 +28,7 @@ const LoginScreen = () => {
       email: email,
       tasks: [["This is a dummy task! Keep this here and make your own", 0]],
       points: 0,
-      friends: [],
+      friends: [[username + "(me)"]],
     });
   };
 
