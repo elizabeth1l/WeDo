@@ -14,14 +14,37 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ref, onValue, update } from "firebase/database";
 
 const LeaderboardScreen = () => {
-  const [friends, setFriends] = useState();
 
-  const getFriendsFromDB = () => {
-    const friendsFromDBRef = ref(db, "users/" + props.username + "/friends");
-    onValue(friendsFromDBRef, (snapshot) => {
-      const data = snapshot.val();
+  const addFriend = (friendUsername) => {
+    //make a copy of tasks array so that we can push the new task to the copy, then update the db
+    let currFriends = [];
+    const tasksFromDBRef = ref(db, "users/" + props.username + "/friends");
+    onValue(tasksFromDBRef, (snapshot) => {
+      currFriends = snapshot.val();
     });
+    currFriends.push([friendUsername, getPointsForUser(friendUsername)]);
+    const updates = {};
+    updates["/users/" + props.username + "/friends"] = currTasks;
+    // setTask("");
+    return update(ref(db), updates);
   };
+
+  const getPointsForUser = (username) => {
+    let points = 0;
+    const tasksFromDBRef = ref(db, "users/" + username + "/points");
+    onValue(tasksFromDBRef, (snapshot) => {
+      points = snapshot.val();
+    });
+    return points;
+  }
+  // const [friends, setFriends] = useState();
+
+  // const getFriendsFromDB = () => {
+  //   const friendsFromDBRef = ref(db, "users/" + props.username + "/friends");
+  //   onValue(friendsFromDBRef, (snapshot) => {
+  //     const data = snapshot.val();
+  //   });
+  // };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.addContainer}>

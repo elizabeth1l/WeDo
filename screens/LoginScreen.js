@@ -22,13 +22,14 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const username = email.slice(0, email.indexOf("@"));
+  const [points, setPoints] = useState(0);
 
-  const writeUserData = () => {
+  const writeUserData = (user) => {
     set(ref(db, "users/" + username.toLowerCase()), {
       email: email,
       tasks: [["This is a dummy task! Keep this here and make your own", 0]],
-      points: 0,
-      friends: [[username + "(me)"]],
+      points: points,
+      friends: [['me', points]],
     });
   };
 
@@ -52,6 +53,7 @@ const LoginScreen = () => {
         const user = userCredential.user;
         console.log("Signed up account:", user.email);
         writeUserData(user);
+        console.log("Friends" , user.friends )
       })
       .catch((error) => alert(error.message));
   };

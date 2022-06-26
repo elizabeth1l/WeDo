@@ -1,10 +1,30 @@
 /* eslint-disable no-unused-vars */
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import Modal from "react-native-modal";
+import { ref, onValue, update } from "firebase/database";
+import { db } from "../firebase";
 
 const Friend = (props) => {
+    const [friendsArray, setFriendsArray] = useState([]);
+
+    const getFriends = () => {
+      let currFriends = [];
+      const tasksFromDBRef = ref(db, "users/" + props.username + "/friends");
+      onValue(tasksFromDBRef, (snapshot) => {
+        currFriends = snapshot.val();
+      });
+      setFriendsArray([...currFriends]);
+    };
+    
+    useEffect(() => {
+      getFriends();
+    }, []);
+
   return (
+    //map over friendsArray then create view based on each friend,
+    //then sort friends based on points
+
     <View>
       <View style={styles.container}>
         <View style={styles.rowContainer}>
