@@ -27,11 +27,14 @@ const LeaderboardScreen = (props) => {
     setModalVisible(!isModalVisible);
   };
 
-  const addFriend = () => {
+  const addFriend =() => {
     let currFriends = [];
+    // let userExists = false;
+    let friend = false;
 
-    console.log(inputValue);
     const doesFriendExist = checkIfUserExists();
+
+
     if (doesFriendExist) {
       const friendsFromDBRef = ref(db, "users/" + props.username + "/friends");
       onValue(friendsFromDBRef, (snapshot) => {
@@ -52,8 +55,8 @@ const LeaderboardScreen = (props) => {
 
   const checkIfUserExists = () => {
     let friend = false;
-    for (let i = 0; i < 10; i++) {
-      const doesFriendExist =  ref(db, "users/" + inputValue.toLowerCase());
+     for (let i = 0; i < 100; i++) {
+      const doesFriendExist = ref(db, "users/" + inputValue.toLowerCase());
       onValue(doesFriendExist, (snapshot) => {
         if (snapshot.val() != null) {
           friend = true;
@@ -66,12 +69,13 @@ const LeaderboardScreen = (props) => {
     <ScrollView style={styles.container}>
       <View style={styles.addContainer}>
         {/* <TouchableOpacity onPress = {toggleModal}> */}
-        <Button title="add" onPress={toggleModalVisibility} />
-        <MaterialCommunityIcons
-          name="account-plus-outline"
-          color="white"
-          size={20}
-        />
+        <TouchableOpacity title="add" onPress={toggleModalVisibility}>
+          <MaterialCommunityIcons
+            name="account-plus-outline"
+            color="white"
+            size={20}
+          />
+        </TouchableOpacity>
 
       </View>
       <View style={styles.titleContainer}>
@@ -82,20 +86,21 @@ const LeaderboardScreen = (props) => {
         <Friend username={props.username}></Friend>
       </View>
 
-      <KeyboardAvoidingView behavior="padding">
-        <Modal isVisible={isModalVisible}>
+      <Modal isVisible={isModalVisible}>
+        <KeyboardAvoidingView behavior="padding">
+
           <View style={styles.viewWrapper}>
             <View style={styles.modalView}>
               <TextInput placeholder="Enter friend username..."
                 value={inputValue} style={styles.textInput}
                 onChangeText={(value) => setInputValue(value)} />
               <Button title="Submit" onPress={addFriend} />
-              <Button title="Close" onPress={toggleModalVisibility} />
+              <Button title="Close" onPress={toggleModalVisibility} data-backdrop="false" />
             </View>
           </View>
-        </Modal>
-      </KeyboardAvoidingView>
 
+        </KeyboardAvoidingView>
+      </Modal>
 
     </ScrollView>
   );

@@ -17,9 +17,7 @@ const Friend = (props) => {
       currFriends = snapshot.val();
       setFriendsArray(currFriends);
     });
-    // console.log(friendsArray);
-    // console.log(props.username)
-    //add a mapping function that sorts the friendsArray based on points
+  
   };
 
   useEffect(() => {
@@ -79,7 +77,7 @@ const Friend = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "90%",
+    width: "95%",
 
     // alignItems: "center",
     alignSelf: "center",
@@ -89,20 +87,23 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
-    marginLeft: 12,
-    width: "80%",
+    marginLeft: 25,
+    width: "70%",
   },
   rowContainer: {
     padding: 5,
     display: "flex",
+    flexDirection: 'row'
   },
   numberContainer: {
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
-    width: "16%",
-    borderRadius: 10,
-    borderWidth: "3mm",
+    width: "13%",
+    borderRadius: 15,
+    borderWidth: "2mm",
+    padding: 5, 
+    marginLeft: 19
   },
 });
 

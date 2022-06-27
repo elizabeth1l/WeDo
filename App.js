@@ -90,6 +90,7 @@ export default function App() {
         <Stack.Screen 
           name = "FriendTaskScreen"
           component = {FriendTaskScreen}
+          options={{ title: 'Tasks' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

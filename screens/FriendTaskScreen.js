@@ -48,7 +48,7 @@ const FriendTaskScreen = ({ route }) => {
       <View style={styles.itemContainer}>
         {tasksArray.map((eachTask, index) => {
           return (
-            <View style = {styles.item}>
+            <View  key = {index} style = {styles.item}>
               <Text style = {styles.text} key={index}>{eachTask}</Text>
             </View>
 
@@ -66,12 +66,20 @@ const FriendTaskScreen = ({ route }) => {
 const styles = StyleSheet.create({
   itemContainer: {
     marginVertical: 20,
+    alignItems: 'center'
   },
   item: {
-    padding:40,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    marginLeft: 12,
+    width: "88%",
+    marginTop: 20,
   },
-  text{ 
+  text : { 
     backgroundColor: 'white',
+    padding: 10, 
+
   },
 })
 export default FriendTaskScreen
