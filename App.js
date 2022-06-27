@@ -9,6 +9,7 @@ import InfoScreen from "./screens/InfoScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MyToDoScreen from "./screens/MyToDoScreen";
 import LeaderboardScreen from "./screens/LeaderboardScreen";
+import FriendTaskScreen from './screens/FriendTaskScreen'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -85,6 +86,10 @@ export default function App() {
           options={{
             headerShown: false,
           }}
+        />
+        <Stack.Screen 
+          name = "FriendTaskScreen"
+          component = {FriendTaskScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
